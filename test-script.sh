@@ -3,28 +3,32 @@
 current_branch=$(git branch --show-current)
 default_tag="v0.1"
 
+# ANSI color codes
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
 # First checks if we are on the main branch
 if [ "$current_branch" != "main" ]; then
-    echo "Error: You are not on the main branch."
+    echo -e "${RED}Error: You are not on the main branch.${NC}"
     exit 1
 fi
 
 # Makes sure user has a clean main branch without pending changes
 if [ -n "$(git status --porcelain)" ]; then
-    echo "Error: There are pending changes in the working directory."
+    echo -e "${RED}Error: There are pending changes in the working directory.${NC}"
     exit 1
 fi
 
 # Fetch from remote and reset to main/branch, with that we make sure we have the latest main changes.
 git fetch
 if [ $? -ne 0 ]; then
-    echo "Error: Failed to fetch from origin."
+    echo -e "${RED}Error: Failed to fetch from origin.${NC}"
     exit 1
 fi
 
 git reset --hard origin/main
 if [ $? -ne 0 ]; then
-    echo "Error: Failed to reset to origin/main."
+    echo -e "${RED}Error: Failed to reset to origin/main.${NC}"
     exit 1
 fi
 
