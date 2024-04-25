@@ -16,7 +16,17 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 # Fetch from remote and reset to main/branch, with that we make sure we have the latest main changes.
-git fetch && git reset --hard origin/main
+git fetch
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to fetch from origin."
+    exit 1
+fi
+
+git reset --hard origin/main
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to reset to origin/main."
+    exit 1
+fi
 
 echo "Successfully reset to the main branch"
 
