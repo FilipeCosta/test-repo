@@ -58,7 +58,7 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
 
     pnpm build
     # Remove if we already have the build in our tmp folder
-    rm -r /tmp/build 
+    rm -rf /tmp/build 
     # We should force it, since we always want to override the dist folder on releases
     mv build /tmp/build
     git checkout -f release
