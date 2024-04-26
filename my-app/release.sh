@@ -57,7 +57,8 @@ if [[ "$response" =~ ^[Yy][Ee][Ss]$ ]]; then
     set -e
 
     pnpm build
-    git checkout release
+    # We should force it, since we always want to override the dist folder on releases
+    git checkout -f release
     git add .
     git commit -m "Release ${new_tag}"
     git tag $new_tag
