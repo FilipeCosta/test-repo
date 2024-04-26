@@ -53,20 +53,20 @@ echo "Do you want to publish tag ${new_tag}? (yes/no)"
 read response
 
 if [[ "$response" =~ ^[Yy][Ee][Ss]$ ]]; then
-    if ! command -v pnpm >/dev/null 2>&1; then
-        echo -e "${RED}You don't have pnpm installed${NC}"
-        exit 1
-    else
-        pnpm build
-        git checkout release
-        git add .
-        git commit -m "Release ${new_tag}"
-        git tag $new_tag
-        git push origin $new_tag
-        git checkout main
+    # Lets make it as a transaction and break the flow if some of the commands fail to execute
+    set -e
 
-        echo -e "\n${GREEN}Release completed successfully ${NC} - ${releases_remote_url}${new_tag}"
-    fi
+    pnpm build
+    git checkout release
+    git add .
+    git commit -m "Release ${new_tag}"
+    git tag $new_tag
+    git push origin $new_tag
+    git checkout main
+
+    echo -e "\n${GREEN}Release completed successfully${NC} - ${releases_remote_url}${new_tag}"
+
+    set +e
 else
     echo "Operation canceled"
 fi
