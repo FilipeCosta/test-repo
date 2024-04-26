@@ -58,7 +58,11 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
 
     pnpm build
     # We should force it, since we always want to override the dist folder on releases
+    mv dist /tmp/dist
     git checkout -f release
+    rm -rf "dist"
+    mkdir dist
+    mv /tmp/dist dist
     git add .
     git commit -m "Release ${new_tag}"
     git tag $new_tag
