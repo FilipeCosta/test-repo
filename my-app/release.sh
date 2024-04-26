@@ -60,8 +60,8 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
     # We should force it, since we always want to override the dist folder on releases
     mv build /tmp/build
     git checkout -f release
-    rm -rf build
     cd ..
+    rm -rf build
     mkdir build
     mv /tmp/build build
     git add .
