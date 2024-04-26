@@ -56,7 +56,7 @@ if [[ "$response" =~ ^[Yy][Ee][Ss]$ ]]; then
         exit 1
     else
         pnpm build
-        git checkout release
+        #git checkout release
     fi
 else
     echo "Operation canceled"
