@@ -53,7 +53,7 @@ if ! command -v pnpm >/dev/null 2>&1; then
     echo -e "${RED}You don't have pnpm installed${NC}"
     exit 1
 else
-    echo "pnpm is installed"
+    pnmp build
 fi
 
 echo "Do you want to publish tag ${new_tag}? (yes/no)"
