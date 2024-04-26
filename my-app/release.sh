@@ -21,10 +21,8 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
-# Delete all local tags
-git tag -l | xargs git tag -d
 # Fetch branches/tags from remote.
-git fetch --all
+git fetch
 if [ $? -ne 0 ]; then
     echo -e "${RED}Error: Failed to fetch from origin.${NC}"
     exit 1
@@ -39,14 +37,15 @@ fi
 
 echo "Successfully reset to the main branch"
 
-latest_tag=$(git tag -l)
+latest_tag=$(git fetch --tags && git describe --tags $(git rev-list --tags --max-count=1)
 new_tag=$default_tag
-
-[ -n "$latest_tag" ] && echo "latest tag is: $latest_tag" || echo "No remote tags found"
 
 # Increment minor version
 if [ -n "$latest_tag" ]; then
-    new_tag=$(echo "$latest_tag" | sed -E 's/v([0-9]+)\.([0-9]+)\.([0-9]+)/printf "v\1.\2.$((\3 + 1))"/ge')
+    echo "latest tag is: $latest_tag"
+    new_tag=$(echo "$latest_tag" | sed -E 's/v([0-9]+)\.([0-9]+)\.([0-9]+)/printf "v\1.\2.$((\3 + 1))"/ge' | sh)
+else
+    echo "No remote tags found"
 fi
 
 echo "Do you want to publish tag ${new_tag}? (y/n)"
