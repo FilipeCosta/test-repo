@@ -1,7 +1,7 @@
 
 # Check if on main branch
 current_branch=$(git branch --show-current)
-default_tag="v0.1"
+default_tag="v0.0.1"
 
 # ANSI color codes
 RED='\033[0;31m'
