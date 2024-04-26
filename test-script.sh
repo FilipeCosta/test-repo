@@ -41,7 +41,7 @@ echo "Successfully reset to the main branch"
 latest_tag=$(git tag -l)
 new_tag=$default_tag
 
-echo "latest remote tag is: ${latest_tag}"
+[ -n "$latest_tag" ] && echo "latest tag is: $latest_tag" || echo "No remote tags found"
 
 #increment minor version
 if [ -n "$latest_tag" ]; then
