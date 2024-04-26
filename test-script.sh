@@ -34,12 +34,10 @@ fi
 
 echo "Successfully reset to the main branch"
 
-latest_tag=$(git tag -l)
+latestt_tag=$(git tag -l)
+new_tag=$default_tag
 
-if [ -z "$latest_tag" ]; then
-    new_tag="$default_tag"
-    echo "The latest tag is ${defualt_tag}"
-else
+if [ -n "$latest_tag" ]; then
     new_tag=$(echo "$tag" | sed -E 's/v([0-9]+)\.([0-9]+)\.([0-9]+)/printf "v\1.\2.$((\3 + 1))"/ge')
     echo "The latest tag is ${latest_tag}"
 fi
