@@ -1,13 +1,15 @@
 
-# Check if on main branch
-current_branch=$(git branch --show-current)
 default_tag="v0.0.1"
 
+releases_remote_url="https://github.com/FilipeCosta/test-repo/releases/tag/"
+
 # ANSI color codes
+GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # First checks if we are on the main branch
+current_branch=$(git branch --show-current)
 if [ "$current_branch" != "main" ]; then
     echo -e "${RED}Error: You are not on the main branch.${NC}"
     exit 1
@@ -57,6 +59,13 @@ if [[ "$response" =~ ^[Yy][Ee][Ss]$ ]]; then
     else
         pnpm build
         git checkout release
+        git add .
+        git commit -m "Release ${new_tag}"
+        git tag $new_tag
+        git push origin $new_tag
+        git checkout main
+
+        echo -e "\n${GREEN}Release completed successfully ${NC} - ${releases_remote_url}${new_tag}"
     fi
 else
     echo "Operation canceled"
