@@ -49,10 +49,11 @@ if [ -n "$latest_tag" ]; then
 fi
 
 # Check if pnpm is available
-if command -v pnpm >/dev/null 2>&1; then
-    echo "pnpm is installed"
+if ! command -v pnpm >/dev/null 2>&1; then
+    echo -e "${RED}You don't have pnpm installed${NC}"
+    exit 1
 else
-    echo "pnpm is not installed"
+    echo "pnpm is installed"
 fi
 
 echo "Do you want to publish tag ${new_tag}? (yes/no)"
