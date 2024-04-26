@@ -43,9 +43,16 @@ new_tag=$default_tag
 
 [ -n "$latest_tag" ] && echo "latest tag is: $latest_tag" || echo "No remote tags found"
 
-#increment minor version
+# Increment minor version
 if [ -n "$latest_tag" ]; then
     new_tag=$(echo "$latest_tag" | sed -E 's/v([0-9]+)\.([0-9]+)\.([0-9]+)/printf "v\1.\2.$((\3 + 1))"/ge')
+fi
+
+# Check if pnpm is available
+if command -v pnpm >/dev/null 2>&1; then
+    echo "pnpm is installed"
+else
+    echo "pnpm is not installed"
 fi
 
 echo "Do you want to publish tag ${new_tag}? (yes/no)"
