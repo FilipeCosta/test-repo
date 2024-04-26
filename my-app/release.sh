@@ -61,6 +61,7 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
     mv dist /tmp/dist
     git checkout -f release
     rm -rf "dist"
+    cd ..
     mkdir dist
     mv /tmp/dist dist
     #git add .
