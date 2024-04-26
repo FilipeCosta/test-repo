@@ -21,8 +21,10 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
+# Delete all local tags
+git tag -l | xargs git tag -d
 # Fetch branches/tags from remote.
-git fetch
+git fetch --all
 if [ $? -ne 0 ]; then
     echo -e "${RED}Error: Failed to fetch from origin.${NC}"
     exit 1
@@ -68,7 +70,7 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
     git add .
     git commit -m "Release ${new_tag}"
     git tag $new_tag
-    git push -f origin $new_tag
+    git push origin $new_tag
     git checkout main
 
     echo -e "\n${GREEN}Release completed successfully${NC} - ${releases_remote_url}${new_tag}"
