@@ -65,7 +65,7 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
     cd ..
     rm -rf build
     mkdir build
-    mv /tmp/build build
+    mv /tmp/build .
     git add .
     git commit -m "Release ${new_tag}"
     git tag $new_tag
