@@ -77,4 +77,3 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
 else
     echo "Operation canceled"
 fi
-
