@@ -19,7 +19,7 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
- Fetch from remote and reset to main/branch, with that we make sure we have the latest main changes.
+# Fetch from remote and reset to main/branch, with that we make sure we have the latest main changes.
 git fetch
 if [ $? -ne 0 ]; then
     echo -e "${RED}Error: Failed to fetch from origin.${NC}"
