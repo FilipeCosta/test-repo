@@ -1,1 +1,1 @@
-git fetch --tags && git describe --tags $(git rev-list --tags --max-count=1)
+git ls-remote --tags origin | cut -d '/' -f 3 | sort -V | tail -n 1

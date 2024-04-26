@@ -37,7 +37,7 @@ fi
 
 echo "Successfully reset to the main branch"
 
-latest_tag=$(git fetch --tags && git describe --tags $(git rev-list --tags --max-count=1))
+latest_tag=$(git ls-remote --tags origin | cut -d '/' -f 3 | sort -V | tail -n 1)
 new_tag=$default_tag
 
 # Increment minor version
