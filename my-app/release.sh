@@ -63,11 +63,11 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
     rm -rf "dist"
     mkdir dist
     mv /tmp/dist dist
-    git add .
-    git commit -m "Release ${new_tag}"
-    git tag $new_tag
-    git push origin $new_tag
-    git checkout main
+    #git add .
+    #git commit -m "Release ${new_tag}"
+    #git tag $new_tag
+    #git push origin $new_tag
+    #git checkout main
 
     echo -e "\n${GREEN}Release completed successfully${NC} - ${releases_remote_url}${new_tag}"
 
