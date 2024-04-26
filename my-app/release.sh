@@ -49,10 +49,10 @@ if [ -n "$latest_tag" ]; then
     new_tag=$(echo "$latest_tag" | sed -E 's/v([0-9]+)\.([0-9]+)\.([0-9]+)/printf "v\1.\2.$((\3 + 1))"/ge')
 fi
 
-echo "Do you want to publish tag ${new_tag}? (yes/no)"
+echo "Do you want to publish tag ${new_tag}? (y/n)"
 read response
 
-if [[ "$response" =~ ^[Yy][Ee][Ss]$ ]]; then
+if [[ "$response" =~ ^[Yy]$ ]]; then
     # Lets make it as a transaction and break the flow if some of the commands fail to execute
     set -e
 
