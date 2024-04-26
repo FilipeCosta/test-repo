@@ -37,7 +37,7 @@ echo "Successfully reset to the main branch"
 latest_remote_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
 new_tag=$default_tag
 
-echo "test -${latest_remote_tag}"
+echo "latest remote tag is: ${latest_remote_tag}"
 
 #increment minor version
 if [ -n "$latest_remote_tag" ]; then
