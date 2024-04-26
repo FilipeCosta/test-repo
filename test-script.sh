@@ -34,7 +34,7 @@ fi
 
 echo "Successfully reset to the main branch"
 
-latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+latest_remote_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
 new_tag=$default_tag
 
 echo "test -${latest_tag}"
@@ -42,7 +42,6 @@ echo "test -${latest_tag}"
 #increment minor version
 if [ -n "$latest_tag" ]; then
     new_tag=$(echo "$latest_tag" | sed -E 's/v([0-9]+)\.([0-9]+)\.([0-9]+)/printf "v\1.\2.$((\3 + 1))"/ge')
-    echo "The latest tag is ${new_tag}"
 fi
 
 echo "Do you want to publish tag ${new_tag}? (yes/no)"
