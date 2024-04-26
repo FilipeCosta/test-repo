@@ -57,18 +57,20 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
     set -e
 
     pnpm build
+    # Remove if we already have the build in our tmp folder
+    rm -r /tmp/build 
     # We should force it, since we always want to override the dist folder on releases
     mv build /tmp/build
     git checkout -f release
     cd ..
     rm -rf build
     mkdir build
-    #mv /tmp/build build
-    #git add .
-    #git commit -m "Release ${new_tag}"
-    #git tag $new_tag
-    #git push origin $new_tag
-    #git checkout main
+    mv /tmp/build build
+    git add .
+    git commit -m "Release ${new_tag}"
+    git tag $new_tag
+    git push origin $new_tag
+    git checkout main
 
     echo -e "\n${GREEN}Release completed successfully${NC} - ${releases_remote_url}${new_tag}"
 
