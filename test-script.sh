@@ -19,7 +19,7 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
-# Fetch from remote and reset to main/branch, with that we make sure we have the latest main changes.
+ Fetch from remote and reset to main/branch, with that we make sure we have the latest main changes.
 git fetch
 if [ $? -ne 0 ]; then
     echo -e "${RED}Error: Failed to fetch from origin.${NC}"
@@ -34,12 +34,15 @@ fi
 
 echo "Successfully reset to the main branch"
 
-latestt_tag=$(git tag -l)
+latest_tag=$(git tag -l)
 new_tag=$default_tag
 
+echo "test -${latest_tag}"
+
+#increment minor version
 if [ -n "$latest_tag" ]; then
-    new_tag=$(echo "$tag" | sed -E 's/v([0-9]+)\.([0-9]+)\.([0-9]+)/printf "v\1.\2.$((\3 + 1))"/ge')
-    echo "The latest tag is ${latest_tag}"
+    new_tag=$(echo "$latest_tag" | sed -E 's/v([0-9]+)\.([0-9]+)\.([0-9]+)/printf "v\1.\2.$((\3 + 1))"/ge')
+    echo "The latest tag is ${new_tag}"
 fi
 
 echo "Do you want to publish tag ${new_tag}? (yes/no)"
