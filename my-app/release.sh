@@ -19,7 +19,6 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
-
 # Delete all local tags
 git tag -l | xargs git tag -d
 # Fetch branches/tags from remote.
@@ -54,6 +53,7 @@ if ! command -v pnpm >/dev/null 2>&1; then
     exit 1
 else
     pnpm build
+    git checkout release
 fi
 
 echo "Do you want to publish tag ${new_tag}? (yes/no)"
