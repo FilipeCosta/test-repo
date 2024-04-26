@@ -43,7 +43,7 @@ new_tag=$default_tag
 # Increment minor version
 if [ -n "$latest_tag" ]; then
     echo "latest tag is: $latest_tag"
-    new_tag=$(echo "$latest_tag" | sed -E 's/v([0-9]+)\.([0-9]+)\.([0-9]+)/printf "v\1.\2.$((\3 + 1))"/ge' | sh)
+    new_tag=$(echo "$latest_tag" | sed -E 's/v([0-9]+)\.([0-9]+)\.([0-9]+)/printf "v\1.\2.$((\3 + 1))"/ge')
 else
     echo "No remote tags found"
 fi
