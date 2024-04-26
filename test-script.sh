@@ -19,17 +19,17 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
-# Fetch from remote and reset to main/branch, with that we make sure we have the latest main changes.
-git fetch
+
 # Delete all local tags
 git tag -l | xargs git tag -d
-# Fetch all tags from the remote repository
-git fetch --tags
+# Fetch branches/tags from remote.
+git fetch --all
 if [ $? -ne 0 ]; then
     echo -e "${RED}Error: Failed to fetch from origin.${NC}"
     exit 1
 fi
 
+# Reset to main/branch, with that we make sure we have the latest main changes
 git reset --hard origin/main
 if [ $? -ne 0 ]; then
     echo -e "${RED}Error: Failed to reset to origin/main.${NC}"
