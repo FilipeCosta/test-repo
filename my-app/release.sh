@@ -65,13 +65,13 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
     # Lets make it as a transaction and break the flow if some of the commands fail to execute
     pnpm build
     # Remove if we already have the build in our tmp folder
-    rm -rf /tmp/dist 
-    # We should force it, since we always want to override the dist folder on releases
-    mv dist /tmp/dist
+    rm -rf /tmp/build 
+    # We should force it, since we always want to override the build folder on releases
+    mv build /tmp/build
     git checkout -f release
-    rm -rf dist
-    mkdir dist
-    mv /tmp/dist .
+    rm -rf build
+    mkdir build
+    mv /tmp/build .
     # We need force for both tag/push because a tag doesn't get updated by running git commit. 
     git tag -f $new_tag
     git add .
