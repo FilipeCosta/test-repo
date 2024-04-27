@@ -75,11 +75,11 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
     # We need force for both tag/push because a tag doesn't get updated by running git commit. 
     git tag -f $new_tag
     git add .
-    git commit -m "Release ${new_tag}"
-    git push origin --force $new_tag
-    git checkout main
+    #git commit -m "Release ${new_tag}"
+    #git push origin --force $new_tag
+    #git checkout main
 
-    echo -e "\n${GREEN}Release completed successfully${NC} - ${releases_remote_url}${new_tag}"
+    #echo -e "\n${GREEN}Release completed successfully${NC} - ${releases_remote_url}${new_tag}"
 else
     echo "Operation canceled"
 fi
