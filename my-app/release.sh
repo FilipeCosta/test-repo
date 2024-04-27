@@ -1,4 +1,4 @@
-
+#!/usr/bin/env bash
 default_tag="v0.0.1"
 
 releases_remote_url="https://github.com/FilipeCosta/test-repo/releases/tag/"
@@ -6,7 +6,9 @@ releases_remote_url="https://github.com/FilipeCosta/test-repo/releases/tag/"
 # ANSI color codes
 GREEN='\033[0;32m'
 RED='\033[0;31m'
-NC='\033[0m' # No Color
+NC='\033[0m'
+
+set -eu
 
 # First checks if we are on the main branch
 current_branch=$(git branch --show-current)
@@ -23,6 +25,12 @@ fi
 
 # Delete all local tags
 git tag -l | xargs git tag -d
+
+# Delete local release branch that might have commited changes and sync bellow.
+if git show-ref --verify --quiet "refs/heads/release"; then
+    git branch -D release
+fi
+
 # Fetch branches/tags from remote.
 git fetch --all
 if [ $? -ne 0 ]; then
@@ -45,7 +53,7 @@ new_tag=$default_tag
 # Increment minor version
 if [ -n "$latest_tag" ]; then
     echo "latest tag is: $latest_tag"
-    new_tag=$(echo "$latest_tag" | sed -E 's/v([0-9]+)\.([0-9]+)\.([0-9]+)/printf "v\1.\2.$((\3 + 1))"/ge')
+    new_tag=$(echo "$latest_tag" | awk -F'[.]' '{print $1 "." $2 "." $3 + 1}')
 else
     echo "No remote tags found"
 fi
@@ -55,27 +63,23 @@ read response
 
 if [[ "$response" =~ ^[Yy]$ ]]; then
     # Lets make it as a transaction and break the flow if some of the commands fail to execute
-    set -e
-
     pnpm build
     # Remove if we already have the build in our tmp folder
-    rm -rf /tmp/build 
+    rm -rf /tmp/dist 
     # We should force it, since we always want to override the dist folder on releases
-    mv build /tmp/build
+    mv dist /tmp/dist
     git checkout -f release
-    cd ..
-    rm -rf build
-    mkdir build
-    mv /tmp/build .
+    rm -rf dist
+    mkdir dist
+    mv /tmp/dist .
+    # We need force for both tag/push because a tag doesn't get updated by running git commit. 
+    git tag -f $new_tag
     git add .
     git commit -m "Release ${new_tag}"
-    git tag -f $new_tag
-    git push origin -f $new_tag
+    git push origin --force $new_tag
     git checkout main
 
     echo -e "\n${GREEN}Release completed successfully${NC} - ${releases_remote_url}${new_tag}"
-
-    set +e
 else
     echo "Operation canceled"
 fi
