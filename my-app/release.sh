@@ -59,13 +59,14 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
     rm -rf build
     mkdir build
     mv /tmp/build .
-    # We need force for both tag/push because a tag doesn't get updated by running git commit. 
+    pnpm version patch
     git add .
-    #git commit -m "Release ${new_tag}"
-    #git tag -f $new_tag
-    #git push origin --force $new_tag
-    #git push origin release
-    #git checkout main
+    git commit -m "Release ${new_tag}"
+    git tag -f $new_tag
+    git push origin --force $new_tag
+    git push origin release
+    git checkout main
+    git push origin main
 
     echo -e "\n${GREEN}Release completed successfully${NC} - ${releases_remote_url}${new_tag}"
 else
