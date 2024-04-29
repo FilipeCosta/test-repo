@@ -23,9 +23,6 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
-# Delete all local tags
-git tag -l | xargs git tag -d
-
 # Delete local release branch that might have commited changes and sync bellow.
 if git show-ref --verify --quiet "refs/heads/release"; then
     git branch -D release
@@ -47,16 +44,7 @@ fi
 
 echo "Successfully reset to the main branch"
 
-latest_tag=$(git ls-remote --tags origin | cut -d '/' -f 3 | sort -V | tail -n 1)
-new_tag=$default_tag
-
-# Increment minor version
-if [ -n "$latest_tag" ]; then
-    echo "latest tag is: $latest_tag"
-    new_tag=$(echo "$latest_tag" | awk -F'[.]' '{print $1 "." $2 "." $3 + 1}')
-else
-    echo "No remote tags found"
-fi
+new_tag=$(pnpm version patch)
 
 echo "Do you want to publish tag ${new_tag}? (y/n)"
 read response
@@ -80,7 +68,8 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
     git push origin release
     git checkout main
 
-    #echo -e "\n${GREEN}Release completed successfully${NC} - ${releases_remote_url}${new_tag}"
+    echo -e "\n${GREEN}Release completed successfully${NC} - ${releases_remote_url}${new_tag}"
 else
+    git reset --hard HEAD~1
     echo "Operation canceled"
 fi
