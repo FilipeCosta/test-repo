@@ -41,7 +41,9 @@ fi
 
 echo "Successfully reset to the main branch"
 
-new_tag=$(pnpm version patch)
+pnpm version patch
+
+new_tag=$(cat package.json | grep '"version"' | awk -F'"' '{print $4}')
 
 echo "Do you want to publish tag ${new_tag}? (y/n)"
 read response
