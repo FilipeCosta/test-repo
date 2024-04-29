@@ -1,6 +1,3 @@
-#!/usr/bin/env bash
-default_tag="v0.0.1"
-
 releases_remote_url="https://github.com/FilipeCosta/test-repo/releases/tag/"
 
 # ANSI color codes
@@ -70,6 +67,6 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
 
     echo -e "\n${GREEN}Release completed successfully${NC} - ${releases_remote_url}${new_tag}"
 else
-    git reset --hard HEAD~1
+    git checkout .
     echo "Operation canceled"
 fi
