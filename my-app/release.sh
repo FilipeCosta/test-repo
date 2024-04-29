@@ -69,6 +69,7 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
 
     echo -e "\n${GREEN}Release completed successfully${NC} - ${releases_remote_url}${new_tag}"
 else
+    # Discard version update
     git checkout .
     echo "Operation canceled"
 fi
