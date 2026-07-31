@@ -1,0 +1,87 @@
+# Test job for the job-log-viewer live streaming.
+# 4 tasks running sequentially (setup -> main -> main -> cleanup), each
+# logging a line every 2 seconds for ~80s, with occasional stderr lines.
+#
+# Submit with:
+#   overmindctl jobs schedule --file ~/Desktop/log-viewer-test-job.yaml
+
+namespace: ucs
+region: us-east
+
+definition:
+  name: log-viewer-stream-test
+  os: linux
+  arch: x86_64
+
+  tasks:
+    - name: test-task-1-setup
+      type: setup
+      command: ucs:bash:5.2.15
+      args:
+        - /bin/bash
+        - -c
+        - >-
+          echo "[task-1] setup starting";
+          for i in {1..40}; do
+            echo "[task-1] setup tick $i of 40";
+            if (( i % 10 == 0 )); then echo "[task-1] stderr checkpoint at tick $i" >&2; fi;
+            sleep 2;
+          done;
+          echo "[task-1] setup done"
+      resources:
+        memory: "1GiB"
+        cpu: "500m"
+
+    - name: test-task-2-build
+      type: main
+      command: ucs:bash:5.2.15
+      args:
+        - /bin/bash
+        - -c
+        - >-
+          echo "[task-2] build starting";
+          for i in {1..40}; do
+            echo "[task-2] building module $i of 40";
+            if (( i % 10 == 0 )); then echo "[task-2] stderr warning: slow module $i" >&2; fi;
+            sleep 2;
+          done;
+          echo "[task-2] build done"
+      resources:
+        memory: "1GiB"
+        cpu: "500m"
+
+    - name: test-task-3-test
+      type: main
+      command: ucs:bash:5.2.15
+      args:
+        - /bin/bash
+        - -c
+        - >-
+          echo "[task-3] tests starting";
+          for i in {1..40}; do
+            echo "[task-3] running test case $i of 40 ... ok";
+            if (( i % 10 == 0 )); then echo "[task-3] stderr notice: flaky test retried at $i" >&2; fi;
+            sleep 2;
+          done;
+          echo "[task-3] tests done"
+      resources:
+        memory: "1GiB"
+        cpu: "500m"
+
+    - name: test-task-4-cleanup
+      type: cleanup
+      command: ucs:bash:5.2.15
+      args:
+        - /bin/bash
+        - -c
+        - >-
+          echo "[task-4] cleanup starting";
+          for i in {1..40}; do
+            echo "[task-4] removing artifact $i of 40";
+            if (( i % 10 == 0 )); then echo "[task-4] stderr checkpoint at tick $i" >&2; fi;
+            sleep 2;
+          done;
+          echo "[task-4] cleanup done"
+      resources:
+        memory: "1GiB"
+        cpu: "500m"
