@@ -1,12 +1,12 @@
 name: Job Log Viewer Live Streaming Test
 
 on:
-  workflow_dispatch: # Allows manual triggering from the GitHub Actions tab
+  workflow_dispatch:
 
 jobs:
   log-viewer-stream-test:
     name: Log Viewer Stream Test
-    runs-on: ubuntu-latest # Matches linux x86_64 requirement
+    runs-on: ubuntu-latest
 
     steps:
       - name: 1. Setup Task (test-task-1-setup)
@@ -19,7 +19,7 @@ jobs:
               echo "[task-1] stderr checkpoint at tick $i" >&2
             fi
             sleep 2
-          | done
+          done
           echo "[task-1] setup done"
 
       - name: 2. Build Task (test-task-2-build)
@@ -49,7 +49,7 @@ jobs:
           echo "[task-3] tests done"
 
       - name: 4. Cleanup Task (test-task-4-cleanup)
-        if: always() # Forces cleanup to run even if setup, build, or test steps fail
+        if: always()
         shell: bash
         run: |
           echo "[task-4] cleanup starting"
