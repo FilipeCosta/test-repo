@@ -5,7 +5,7 @@ on:
 
 jobs:
   log-viewer-stream-test:
-    name: Log Viewer Stream Test
+    name: Log Viewer Stream Tests
     runs-on: ubuntu-latest
 
     steps:
