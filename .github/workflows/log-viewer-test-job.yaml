@@ -1,4 +1,4 @@
-name: Job Log Viewer Live Streaming Test
+name: Job Log Viewer Live Streaming Tests
 
 on:
   workflow_dispatch:
