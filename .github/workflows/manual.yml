@@ -1,0 +1,63 @@
+name: Job Log Viewer Live Streaming Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  log-viewer-stream-test:
+    name: Log Viewer Stream Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Setup Task (test-task-1-setup)
+        shell: bash
+        run: |
+          echo "[task-1] setup starting"
+          for i in {1..40}; do
+            echo "[task-1] setup tick $i of 40"
+            if (( i % 10 == 0 )); then
+              echo "[task-1] stderr checkpoint at tick $i" >&2
+            fi
+            sleep 2
+          done
+          echo "[task-1] setup done"
+
+      - name: 2. Build Task (test-task-2-build)
+        shell: bash
+        run: |
+          echo "[task-2] build starting"
+          for i in {1..40}; do
+            echo "[task-2] building module $i of 40"
+            if (( i % 10 == 0 )); then
+              echo "[task-2] stderr warning: slow module $i" >&2
+            fi
+            sleep 2
+          done
+          echo "[task-2] build done"
+
+      - name: 3. Test Task (test-task-3-test)
+        shell: bash
+        run: |
+          echo "[task-3] tests starting"
+          for i in {1..40}; do
+            echo "[task-3] running test case $i of 40 ... ok"
+            if (( i % 10 == 0 )); then
+              echo "[task-3] stderr notice: flaky test retried at $i" >&2
+            fi
+            sleep 2
+          done
+          echo "[task-3] tests done"
+
+      - name: 4. Cleanup Task (test-task-4-cleanup)
+        if: always()
+        shell: bash
+        run: |
+          echo "[task-4] cleanup starting"
+          for i in {1..40}; do
+            echo "[task-4] removing artifact $i of 40"
+            if (( i % 10 == 0 )); then
+              echo "[task-4] stderr checkpoint at tick $i" >&2
+            fi
+            sleep 2
+          done
+          echo "[task-4] cleanup done"
